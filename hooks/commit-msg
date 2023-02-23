@@ -1,0 +1,18 @@
+#!/bin/bash
+# this hook checks if commit messages follow conventional commits(https://www.conventionalcommits.org/en/v1.0.0/#summary) 
+# filename of commit contents
+INPUT_FILE=$1
+START_LINE=`head -n1 $INPUT_FILE`
+# should start with these PREFIXes:
+declare -a PREFIX=( "feat" "fix" "BREAKING CHANGE"  "build"  "chore"  "docs"  "ci"  "refactor"  "test" )
+
+for p in ${PREFIX[@]}; do
+  REG="$p*"
+  if [[ $START_LINE == $REG ]];
+    then 
+        exit 0
+  fi
+done
+
+echo "Invalid commit style must start with ( ${PREFIX[@]} )"
+exit 1
